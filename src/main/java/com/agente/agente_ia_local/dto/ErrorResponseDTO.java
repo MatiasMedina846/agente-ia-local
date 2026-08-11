@@ -1,6 +1,7 @@
 package com.agente.agente_ia_local.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ErrorResponseDTO {
 
@@ -8,15 +9,17 @@ public class ErrorResponseDTO {
     private int status;
     private String error;
     private String message;
+    private List<String> errors;
 
     public ErrorResponseDTO() {
     }
 
-    public ErrorResponseDTO(LocalDateTime timestamp, int status, String error, String message) {
+    public ErrorResponseDTO(LocalDateTime timestamp, int status, String error, String message, List<String> errors) {
         this.timestamp = timestamp;
         this.status = status;
         this.error = error;
         this.message = message;
+        this.errors = errors;
     }
 
     public LocalDateTime getTimestamp() {
@@ -49,5 +52,13 @@ public class ErrorResponseDTO {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public List<String> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
     }
 }

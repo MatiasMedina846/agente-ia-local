@@ -15,12 +15,12 @@ RETENTION_DAYS=${RETENTION_DAYS:-30}
 
 mkdir -p "$BACKUP_DIR"
 
-FILENAME="$BACKUP_DIR/backup_$(date +%Y%m%d_%H%M%S).sql.gz"
+FILENAME="$BACKUP_DIR/db_backup_$(date +%Y%m%d_%H%M%S).sql.gz"
 
 docker exec "$CONTAINER" pg_dump -U "$DB_USER" "$DB_NAME" | gzip > "$FILENAME"
 
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Backup creado: $FILENAME"
 
-find "$BACKUP_DIR" -type f -name "backup_*.sql.gz" -mtime +"$RETENTION_DAYS" -delete
+find "$BACKUP_DIR" -type f -name "db_backup_*.sql.gz" -mtime +"$RETENTION_DAYS" -delete
 
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] Backups anteriores a $RETENTION_DAYS días eliminados."

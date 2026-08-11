@@ -1,5 +1,5 @@
 # Uso en el VPS:
-#   1) Crear .env a partir de .env.example y definir DOMAIN y credenciales.
+#   1) Crear .env a partir de env.example y definir DOMAIN y credenciales.
 #   2) Levantar SOLO nginx + certbot primero:
 #        docker compose -f docker-compose.prod.yml up -d nginx certbot
 #   3) Emitir el certificado inicial (primera vez):
@@ -11,7 +11,7 @@
 #   El contenedor certbot renueva automáticamente los certificados cada 12 horas.
 
 services:
-  postgres-db:
+  db:
     image: postgres:15-alpine
     container_name: postgres_agente_ia
     restart: unless-stopped
@@ -19,17 +19,23 @@ services:
       POSTGRES_DB: ${DB_NAME:-agente_ia_db}
       POSTGRES_USER: ${DB_USER:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-rootpassword}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-agente_ia_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     volumes:
-      - postgres_agente_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
 
-  app:
+  backend:
     build: .
-    container_name: agente_ia_app
+    container_name: agente_ia_backend
     restart: unless-stopped
     depends_on:
-      - postgres-db
+      db:
+        condition: service_healthy
     environment:
-      DB_URL: jdbc:postgresql://postgres-db:5432/${DB_NAME:-agente_ia_db}
+      DB_URL: jdbc:postgresql://db:5432/${DB_NAME:-agente_ia_db}
       DB_USER: ${DB_USER:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-rootpassword}
       AI_OLLAMA_URL: ${AI_OLLAMA_URL:-http://host.docker.internal:11434}
@@ -42,7 +48,7 @@ services:
     container_name: nginx_agente_ia
     restart: unless-stopped
     depends_on:
-      - app
+      - backend
     ports:
       - "80:80"
       - "443:443"
@@ -66,4 +72,4 @@ services:
       sleep 12h & wait $${!}; done;'
 
 volumes:
-  postgres_agente_data:
+  postgres_data:

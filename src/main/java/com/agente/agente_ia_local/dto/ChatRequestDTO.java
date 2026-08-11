@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public class ChatRequestDTO {
 
-    @NotBlank(message = "El prompt no puede ser nulo ni vacío")
+    @NotBlank(message = "El prompt no puede estar vacío")
     private String prompt;
 
     public ChatRequestDTO() {
