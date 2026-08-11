@@ -1,0 +1,15 @@
+services:
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: postgres_agente_ia
+    environment:
+      POSTGRES_DB: ${DB_NAME:-agente_ia_db}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-rootpassword}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_agente_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_agente_data:
