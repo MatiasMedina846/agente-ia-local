@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:15-alpine
+    image: pgvector/pgvector:pg15
     container_name: postgres_agente_ia
     restart: unless-stopped
     environment:
@@ -29,7 +29,12 @@ services:
       DB_USER: ${DB_USER:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-rootpassword}
       AI_OLLAMA_URL: ${AI_OLLAMA_URL:-http://host.docker.internal:11434}
-      AI_OLLAMA_MODEL: ${AI_OLLAMA_MODEL:-llama3.2}
+      AI_OLLAMA_MODEL: ${AI_OLLAMA_MODEL:-llama3}
+      ENCRYPTION_MASTER_KEY: ${ENCRYPTION_MASTER_KEY:-agenteia256bitkeychangemeinprod!}
+      WHISPER_API_KEY: ${WHISPER_API_KEY:-}
+      WHATSAPP_VERIFY_TOKEN: ${WHATSAPP_VERIFY_TOKEN:-agenteia_verify_token}
+      DEBOUNCE_WINDOW_MS: ${DEBOUNCE_WINDOW_MS:-3500}
+      TYPING_ENABLED: ${TYPING_ENABLED:-true}
     ports:
       - "8080:8080"
 

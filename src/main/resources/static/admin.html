@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agente IA - Panel Admin</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+<div class="admin">
+    <aside class="sidebar">
+        <div class="logo">🤖 Agente IA</div>
+        <nav>
+            <a href="#" data-section="dashboard" class="active">Dashboard</a>
+            <a href="#" data-section="tenants">Negocios</a>
+            <a href="#" data-section="handoffs">Handoffs</a>
+            <a href="#" data-section="config">Configuración</a>
+        </nav>
+    </aside>
+
+    <main class="content">
+        <!-- Dashboard -->
+        <section id="sec-dashboard" class="section active">
+            <h2>Dashboard</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-value" id="stat-messages">-</span>
+                    <span class="stat-label">Mensajes (7d)</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="stat-fallbacks">-</span>
+                    <span class="stat-label">Fallbacks</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="stat-handoffs">-</span>
+                    <span class="stat-label">Handoffs pendientes</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="stat-active">-</span>
+                    <span class="stat-label">Conversaciones activas</span>
+                </div>
+            </div>
+            <div id="event-breakdown" class="breakdown"></div>
+        </section>
+
+        <!-- Tenants -->
+        <section id="sec-tenants" class="section">
+            <h2>Negocios</h2>
+            <button id="btn-new-tenant" class="btn-primary">+ Nuevo Negocio</button>
+            <div id="tenant-list" class="card-list"></div>
+            <div id="tenant-form" class="form-card" hidden>
+                <h3 id="form-title">Nuevo Negocio</h3>
+                <input type="hidden" id="tenant-id">
+                <label>Nombre</label>
+                <input type="text" id="tenant-name" placeholder="Zapatería López">
+                <label>Slug (URL)</label>
+                <input type="text" id="tenant-slug" placeholder="zapateria-lopez">
+                <label>Nombre legal</label>
+                <input type="text" id="tenant-business" placeholder="López S.A.">
+                <label>Tono de voz</label>
+                <select id="tenant-tone">
+                    <option value="FORMAL">Formal</option>
+                    <option value="INFORMAL">Informal</option>
+                    <option value="FRIENDLY" selected>Amigable</option>
+                </select>
+                <label>Mensaje de bienvenida</label>
+                <textarea id="tenant-welcome" placeholder="¡Hola! Bienvenido..."></textarea>
+                <label>Prompt del sistema</label>
+                <textarea id="tenant-prompt" rows="4" placeholder="Eres un asistente de..."></textarea>
+                <label>Horario</label>
+                <input type="text" id="tenant-hours" placeholder='{"lun-vie":"09:00-18:00"}'>
+                <div class="form-actions">
+                    <button id="btn-save-tenant" class="btn-primary">Guardar</button>
+                    <button id="btn-cancel-tenant" class="btn-secondary">Cancelar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Handoffs -->
+        <section id="sec-handoffs" class="section">
+            <h2>Handoffs Pendientes</h2>
+            <div id="handoff-list" class="card-list"></div>
+        </section>
+
+        <!-- Config -->
+        <section id="sec-config" class="section">
+            <h2>Configuración del Chatbot</h2>
+            <div id="config-form" class="form-card">
+                <h3>Seleccioná un negocio para configurar</h3>
+                <select id="config-tenant-select"></select>
+                <div id="config-fields" hidden>
+                    <label>Mensaje fuera de horario</label>
+                    <textarea id="config-offline"></textarea>
+                    <label>Color primario</label>
+                    <input type="color" id="config-primary" value="#075e54">
+                    <label>Color secundario</label>
+                    <input type="color" id="config-secondary" value="#128c7e">
+                    <label>Logo URL</label>
+                    <input type="text" id="config-logo" placeholder="https://...">
+                    <button id="btn-save-config" class="btn-primary">Guardar Config</button>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+<script src="/js/admin.js"></script>
+</body>
+</html>
